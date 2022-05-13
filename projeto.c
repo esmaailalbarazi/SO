@@ -1,4 +1,5 @@
 //? @authors: Esmaail Albarazi
+//Olá Daviiiiiii <3 
 //? compile with: gcc -Wall -pthread projeto.c -o projeto
 #include <stdlib.h>
 #include <stdio.h>

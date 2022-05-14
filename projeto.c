@@ -99,7 +99,7 @@ void edge_server_manager(EdgeServer es)
     // Criação das threads que simulam os vCPUs
     for (int i = 0; i < 2; i++) // Percorremos a lista de threads
     {
-        es.vCPUs.
+        //es.vCPUs.
     }
 }
 
@@ -157,7 +157,7 @@ void print_variables()
 {
     printf("QUEUE_POS:%d\nMAX_WAIT:%d Sec\nEDGE_SERVER_NUMBER:%d\n", QUEUE_POS, MAX_WAIT, EDGE_SERVER_NUMBER);
     for (int i = 0; i < EDGE_SERVER_NUMBER; ++i)
-        printf("\nSERVER #%d: \nSERVER NAME: %s\nSERVER PROCESSING CAPACITY: %d\n", i + 1, edgeServer_list[i].SERVER_NAME, edgeServer_list[i].PROCESSING_CAPACITY);
+        printf("\nSERVER #%d: \nSERVER NAME: %s\nvCPU 1 PROCESSING CAPACITY: %d\nvCPU 2 PROCESSING CAPACITY:%d", i + 1, edgeServer_list[i].SERVER_NAME, edgeServer_list[i].vCPUs[0].PROCESSING_CAPACITY,edgeServer_list[i].vCPUs[1].PROCESSING_CAPACITY);
 }
 
 void load_config()
@@ -202,7 +202,7 @@ int main(void)
     load_config();
 
     print_variables(); // View config Variables
-
+/*
     // Validação dos dados
     if (EDGE_SERVER_NUMBER < 2)
     {
@@ -243,7 +243,6 @@ int main(void)
     while (1)
         ;
 
-    /*
         // Create semaphore for log_output
         sem_unlink("LOG_SEM");
         LOG_SEM = sem_open("LOG_SEM", O_CREAT | O_EXCL, 0700, 1);

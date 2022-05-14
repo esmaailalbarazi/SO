@@ -37,7 +37,6 @@ typedef struct vCPU
     bool state; // TRUE -> ACTIVE ,  FALSE -> NOT ACTIVE
     // Esse estado vai determinar  o nível de performance do Edge Server ..
     int PROCESSING_CAPACITY;
-    pthread_t vCPU_thread; // vCPU Thread
 } vCPU;
 
 typedef struct EdgeServer
@@ -77,15 +76,33 @@ void *vCPU_thread(void *p)
     pthread_t id = pthread_self();
 
 #ifdef DEBUG
-    sleep(10);
+    // sleep(10);
     printf("Thread %ld: vCPU %d starting..\n", id, c_id);
 #endif
 
+    /*
     pthread_mutex_lock(&mutex);
     // Do somthing here ...
     pthread_mutex_unlock(&mutex);
+    */
 
     pthread_exit(NULL);
+}
+
+void *scheduler(void *p)
+{
+#ifdef DEBUG
+    // sleep(10);
+    printf("Thread scheduler started!");
+#endif
+}
+
+void *dispatcher(void *p)
+{
+#ifdef DEBUG
+    // sleep(10);
+    printf("Thread dispatcher started!");
+#endif
 }
 
 void edge_server_manager(EdgeServer es)
@@ -96,15 +113,26 @@ void edge_server_manager(EdgeServer es)
     printf("Processo EdgeServer #%s# a correr\n", es.SERVER_NAME);
 #endif
 
+    sem_wait(STAT_SEM);
     // Criação das threads que simulam os vCPUs
     for (int i = 0; i < 2; i++) // Percorremos a lista de threads
     {
+        pthread_create(&threads_vCPU[i], NULL, vCPU_thread, &es.vCPUs[i].PROCESSING_CAPACITY); // Cria thread carro
+    }
+    sem_post(STAT_SEM);
+
+    while (1)
+    {
+        // TODO   Verifica a performance
+
+        sleep(5);
         //es.vCPUs.
     }
 }
 
 void task_manager()
 {
+    pthread_t thread_scheduler, thread_dispatcher;
     pid_t edge_servers[EDGE_SERVER_NUMBER];
 
     // Criar os	processos Edge Server
@@ -120,7 +148,11 @@ void task_manager()
         }
     }
 
-    // TODO Criação da thread scheduler e gestão	do escalonamento das tarefas
+    // Criação da thread scheduler e gestão do escalonamento das tarefas
+    pthread_create(&thread_scheduler, NULL, scheduler, NULL);
+
+    // Criação	da	thread	dispatcher para	distribuição das	tarefas
+    pthread_create(&thread_dispatcher, NULL, dispatcher, NULL);
 }
 
 void log_output(char *txt)
@@ -242,22 +274,21 @@ int main(void)
 
     while (1)
         ;
-
-        // Create semaphore for log_output
-        sem_unlink("LOG_SEM");
-        LOG_SEM = sem_open("LOG_SEM", O_CREAT | O_EXCL, 0700, 1);
-        sem_unlink("STAT_SEM");
-        STAT_SEM = sem_open("STAT_SEM", O_CREAT | O_EXCL, 0700, 1);
+    /*
+    // Create semaphore for log_output
+    sem_unlink("LOG_SEM");
+    LOG_SEM = sem_open("LOG_SEM", O_CREAT | O_EXCL, 0700, 1);
+    sem_unlink("STAT_SEM");
+    STAT_SEM = sem_open("STAT_SEM", O_CREAT | O_EXCL, 0700, 1);
 
     log_output("OFFLOAD SIMULATOR STARTING");
-
+    */
     // remove resources (shared memory and semaphore)
     // semaphore
     sem_close(LOG_SEM);    // fecha o semaforo
     sem_unlink("LOG_SEM"); // apaga o semaforo
     sem_close(STAT_SEM);
     sem_unlink("STAT_SEM");
-    */
 
     // shared memory
     shmctl(shmid, IPC_RMID, NULL);

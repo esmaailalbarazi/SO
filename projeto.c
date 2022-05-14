@@ -209,21 +209,25 @@ void load_config()
     for (int i = 0; i < EDGE_SERVER_NUMBER; ++i)
     {
         fgets(name, 100, f);
+        
         // Returns first token
         // edgeServer_list[i].SERVER_NAME = strtok(name, ",");
 
         strcpy(edgeServer_list[i].SERVER_NAME, strtok(name, ","));
-
-        if (edgeServer_list[i].SERVER_NAME != NULL)
-        {
-            edgeServer_list[i].vCPUs[0].state = false;
+        
+        if (edgeServer_list[i].SERVER_NAME == NULL)
+        
+            printf("\nServer nao existe!");
+        else{
             edgeServer_list[i].vCPUs[0].PROCESSING_CAPACITY = atoi(strtok(NULL, ","));
-
-            edgeServer_list[i].vCPUs[1].state = false;
+            edgeServer_list[i].vCPUs[0].state = false;
             edgeServer_list[i].vCPUs[1].PROCESSING_CAPACITY = atoi(strtok(NULL, ","));
+            edgeServer_list[i].vCPUs[1].state = false;
         }
-    }
 
+
+            
+    }
     fclose(f);
 }
 
@@ -274,7 +278,7 @@ int main(void)
 
     while (1)
         ;
-    /*
+    
     // Create semaphore for log_output
     sem_unlink("LOG_SEM");
     LOG_SEM = sem_open("LOG_SEM", O_CREAT | O_EXCL, 0700, 1);

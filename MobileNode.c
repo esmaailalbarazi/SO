@@ -15,11 +15,21 @@
 #include <string.h>
 #include <stdbool.h>
 
-void read_command_namedpipe(){
-    while(true){
+pid_t Mobile_Node;
 
-    }
+void mobileNode()
+{
 }
-int main(void){
-    read_command_namedpipe();
+
+int main(void)
+{
+    // TODO leitura da linha de comando
+
+    // TODO Verifica se o input é válido
+
+    // Criação do processo mobile node
+    if ((Mobile_Node = fork()) == 0) // child process
+    {
+        mobileNode();
+    }
 }

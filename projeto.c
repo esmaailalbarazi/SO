@@ -1,4 +1,4 @@
-//? @authors: Esmaail Albarazi @esmaailalbarazi
+//? @authors: Esmaail Albarazi
 //? compile with: gcc -Wall -pthread projeto.c -o projeto
 //! Olá Daviiiiiii <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3
 

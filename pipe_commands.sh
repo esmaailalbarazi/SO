@@ -1,0 +1,3 @@
+PIPE < ID tarefa:2:10
+PIPE < STATS
+PIPE < EXIT
